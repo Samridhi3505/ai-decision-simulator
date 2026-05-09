@@ -1,4 +1,4 @@
-import Decision from "../models/Decision.js";
+import Decision from "../models/decision.js";
 
 // ✅ CREATE DECISION (with AI)
 export const createDecision = async (req, res) => {
