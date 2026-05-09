@@ -1,0 +1,1000 @@
+/* ===== ROOT VARIABLES ===== */
+:root {
+  --navbar-height: 70px;
+  --panel-width: 320px;
+}
+
+/* ===== GLOBAL ===== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.app.dark {
+  background: linear-gradient(-45deg, #0f172a, #020617, #1e293b, #020617);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  color: white;
+}
+
+.app.light {
+  background: linear-gradient(-45deg, #f8fafc, #e0e7ff, #dbeafe, #f1f5f9);
+  background-size: 400% 400%;
+  animation: gradientBG 14s ease infinite;
+  color: black;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  z-index: 2000;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.decision-container {
+  max-width: 900px;
+  margin: auto;
+  padding: calc(var(--navbar-height) + 20px) 20px 120px;
+  transition: transform 0.3s ease;
+}
+
+/* SHIFT WHEN HELP OPENS */
+.decision-container.shifted {
+  transform: translateX(-160px);
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.top-bar h1 {
+  font-size: 28px;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.theme-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+/* ===== INPUTS ===== */
+textarea, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  backdrop-filter: blur(10px);
+  transition: 0.2s;
+}
+
+textarea {
+  height: 120px;
+  margin-bottom: 20px;
+}
+
+.app.dark textarea,
+.app.dark input {
+  background: #1e293b;
+  color: white;
+}
+
+.app.light textarea,
+.app.light input {
+  background: rgba(255,255,255,0.9);
+  color: black;
+}
+
+textarea:focus, input:focus {
+  box-shadow: 0 0 0 2px #6366f1;
+}
+
+/* ===== OPTIONS ===== */
+.option-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.option-row button {
+  background: #ef4444;
+  color: white;
+  border-radius: 10px;
+  border: none;
+}
+
+/* ===== ADD BUTTON ===== */
+.add-btn {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: white;
+  border: none;
+}
+
+/* ===== SIMULATE BUTTON ===== */
+.simulate-btn {
+  margin-top: 25px;
+  padding: 14px;
+  width: 100%;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.simulate-btn:disabled {
+  opacity: 0.6;
+}
+
+/* shine effect */
+.simulate-btn::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+
+.simulate-btn:hover::after {
+  left: 100%;
+}
+
+/* ===== RESULT BOX ===== */
+.result-box {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 14px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.app.dark .result-box {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+.app.light .result-box {
+  background: rgba(255,255,255,0.7);
+}
+
+/* subtle glow */
+.result-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, transparent, rgba(99,102,241,0.2));
+}
+
+/* ===== BEST CARD ===== */
+.best-card {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  text-align: center;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
+}
+
+/* ===== HELP BUTTON ===== */
+.help-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  font-size: 20px;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  z-index: 1600;
+}
+
+/* ===== HELP PANEL ===== */
+.help-panel {
+  position: fixed;
+  top: var(--navbar-height);
+  right: -320px;
+  width: var(--panel-width);
+  height: calc(100% - var(--navbar-height));
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  backdrop-filter: blur(20px);
+  z-index: 1500;
+}
+
+.help-panel.open {
+  right: 0;
+}
+
+/* THEMES */
+.app.dark .help-panel {
+  background: rgba(2, 6, 23, 0.95);
+}
+
+.app.light .help-panel {
+  background: rgba(255,255,255,0.95);
+}
+
+/* steps */
+.step {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.app.dark .step {
+  background: rgba(255,255,255,0.05);
+}
+
+.app.light .step {
+  background: rgba(0,0,0,0.05);
+}
+
+.step:hover {
+  transform: translateX(5px);
+}
+
+/* bottom button */
+.help-panel button {
+  margin-top: auto;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .decision-container.shifted {
+    transform: none;
+  }
+
+  .help-panel {
+    width: 100%;
+    right: -100%;
+  }
+
+  .help-panel.open {
+    right: 0;
+  }
+}
+.main-container {
+  display: flex;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.content {
+  flex: 1;
+  transition: all 0.3s ease;
+}
+.help-panel {
+  width: 320px;
+  min-width: 320px;
+  background: #fff8f0;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.help-closed .help-panel {
+  transform: translateX(100%);
+}
+.help-open .content {
+  margin-right: 320px;
+}
+.help-closed .content {
+  margin-right: 0;
+}
+body {
+  overflow-x: hidden;
+}
+.navbar {
+  position: relative;
+  z-index: 10;
+}
+
+.help-panel {
+  position: fixed;
+  top: 0;
+  right: -350px; /* hidden */
+  width: 350px;
+  height: 100vh;
+  background: #0f172a;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+.help-panel.open {
+  right: 0;
+}
+.decision-container {
+  transition: transform 0.3s ease;
+}
+
+.help-panel.open ~ .decision-container {
+  transform: translateX(-50px); /* small shift only */
+}
+.layout {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.help-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100vh;
+  background: #0f172a;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.help-panel.open {
+  right: 0;
+}
+/* ===== HELP PANEL SPACING ===== */
+.help-panel {
+  right: 30px;              /* space from right edge */
+  top: 80px;                /* space from navbar */
+  padding: 20px;            /* inner spacing */
+  border-radius: 16px;
+}
+
+/* ===== ADD GAP FROM CONTENT ===== */
+.help-open .help-panel {
+  right: 40px;              /* tweak if needed */
+}
+
+/* ===== GLASSMORPHISM FOR BOXES ===== */
+.step {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+
+  padding: 14px;
+  margin-bottom: 12px;
+
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+
+/* ===== GLASS BUTTON ===== */
+.help-panel button {
+  margin-top: 18px;
+
+  background: rgba(79, 70, 229, 0.5);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+
+  transition: all 0.3s ease;
+}
+
+.help-panel button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(79,70,229,0.4);
+}
+/* ===== HELP PANEL FULL FIX ===== */
+
+.help-panel {
+  position: fixed;
+  top: 80px; /* adjust if navbar height differs */
+  right: 20px;
+
+  width: 320px;
+  max-height: calc(100vh - 100px);
+
+  padding: 16px;
+  border-radius: 16px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+
+  z-index: 1000;
+
+  /* glass effect (safe, no click blocking) */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===== FIX CLICK BLOCKING ===== */
+
+/* remove click blocking overlays */
+.help-panel::before,
+.help-panel::after {
+  pointer-events: none;
+}
+
+/* ensure buttons are clickable */
+.help-panel button,
+.got-it-btn,
+.help-fab {
+  position: relative;
+  z-index: 1100;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* floating yellow button */
+.help-fab {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* got it button */
+.got-it-btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* ===== IMPORTANT GLOBAL FIX ===== */
+
+/* prevent parent from blocking scroll/click */
+body,
+html {
+  overflow-x: hidden;
+}
+
+/* if you used any overlay / blur layer */
+.overlay,
+.blur-bg,
+.glass-layer {
+  pointer-events: none !important;
+}
+
+/* avoid hidden scroll traps */
+.parent-container,
+.wrapper,
+.main-container {
+  overflow: visible !important;
+}
+
+/* ===== FLEX SAFETY ===== */
+
+.help-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.help-panel {
+  flex: 1;
+}
+
+/* ===== SCROLLBAR (optional) ===== */
+
+.help-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.help-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+/* ===== GLOBAL SMOOTHNESS ===== */
+* {
+  transition: all 0.3s ease-in-out;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.app {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #1e1e2f, #2a2a4a, #1a1a2e);
+  background-size: 600% 600%;
+  animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ===== GLASSMORPHISM PANELS ===== */
+.help-panel,
+.result-box,
+.decision-container,
+.option-row,
+textarea {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+
+/* ===== GLOW EFFECT (HOVER) ===== */
+.help-panel:hover,
+.result-box:hover,
+.decision-container:hover {
+  box-shadow:
+    0 0 20px rgba(0, 255, 255, 0.4),
+    0 0 40px rgba(0, 255, 255, 0.2);
+}
+
+
+/* ===== BUTTON STYLE (GLOW + GLASS) ===== */
+button {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+
+  backdrop-filter: blur(10px);
+
+  color: white;
+  font-weight: 500;
+
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 0 15px rgba(0, 255, 255, 0.6),
+    0 0 25px rgba(0, 255, 255, 0.3);
+}
+
+
+/* ===== SPECIAL BUTTONS ===== */
+.simulate-btn {
+  background: linear-gradient(45deg, #00f5ff, #00ffae);
+  color: black;
+  font-weight: bold;
+}
+
+.got-it-btn {
+  background: linear-gradient(45deg, #ffd700, #ffb300);
+  color: black;
+  font-weight: bold;
+}
+
+
+/* ===== INPUTS ===== */
+textarea,
+input {
+  color: white;
+  outline: none;
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* ===== HELP BUTTON (FLOATING) ===== */
+.help-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+
+  font-size: 20px;
+  border-radius: 50%;
+  padding: 14px;
+
+  background: linear-gradient(45deg, #00f5ff, #00ffae);
+  color: black;
+
+  box-shadow:
+    0 0 15px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.3);
+
+  z-index: 1200;
+}
+
+.help-btn:hover {
+  transform: scale(1.1);
+}
+
+
+/* ===== RESULT BEST CARD ===== */
+.best-card {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+
+  background: rgba(0, 255, 150, 0.15);
+  border: 1px solid rgba(0, 255, 150, 0.3);
+
+  box-shadow: 0 0 15px rgba(0, 255, 150, 0.3);
+}
+
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.4);
+  border-radius: 10px;
+}
+/* ===== AI DECISION SIMULATOR TITLE ===== */
+
+.top-bar h1 {
+  font-size: 28px;
+  font-weight: 700;
+
+  /* gradient text */
+  background: linear-gradient(90deg, #00f5ff, #00ffae, #7b61ff);
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* glow */
+  text-shadow:
+    0 0 8px rgba(0, 255, 255, 0.6),
+    0 0 16px rgba(0, 255, 255, 0.4);
+
+  /* animation */
+  animation: shineMove 4s linear infinite;
+}
+
+/* gradient animation */
+@keyframes shineMove {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+
+/* ===== EXTRA: subtle floating effect ===== */
+.top-bar h1:hover {
+  transform: scale(1.05);
+  text-shadow:
+    0 0 12px rgba(0, 255, 255, 0.9),
+    0 0 25px rgba(0, 255, 255, 0.6);
+}
+.top-bar h1 {
+  animation: shineMove 4s linear infinite, pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(0,255,255,0.6);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(0,255,255,1);
+  }
+}
+/* ===== BASE APP ===== */
+.app {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.6s ease, color 0.4s ease;
+}
+
+/* ===== DYNAMIC BACKGROUND (LIGHT / DARK) ===== */
+.app.dark {
+  background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
+}
+
+.app.light {
+  background: linear-gradient(270deg, #e0f7fa, #ffffff, #d1f2eb);
+}
+
+/* ===== WAVE LAYERS ===== */
+.app::before,
+.app::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  left: -50%;
+  bottom: -60%;
+  border-radius: 40%;
+  z-index: 0;
+
+  animation: waveMove 12s linear infinite,
+             colorShift 10s ease-in-out infinite alternate;
+
+  transition: background 0.5s ease;
+}
+
+/* ===== DARK MODE WAVES ===== */
+.app.dark::before {
+  background: rgba(0, 255, 255, 0.08);
+}
+
+.app.dark::after {
+  background: rgba(0, 255, 170, 0.06);
+}
+
+/* ===== LIGHT MODE WAVES ===== */
+.app.light::before {
+  background: rgba(0, 150, 255, 0.08);
+}
+
+.app.light::after {
+  background: rgba(0, 200, 150, 0.06);
+}
+
+/* ===== WAVE MOTION ===== */
+@keyframes waveMove {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  50% {
+    transform: rotate(180deg) translateY(-30px);
+  }
+  100% {
+    transform: rotate(360deg) translateY(0);
+  }
+}
+
+/* ===== COLOR CONTRAST SHIFT ===== */
+@keyframes colorShift {
+  0% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(20deg) brightness(1.1);
+  }
+  100% {
+    filter: hue-rotate(-20deg) brightness(0.95);
+  }
+}
+
+/* ===== CONTENT ABOVE WAVES ===== */
+.layout,
+.decision-container,
+.help-panel {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== SMOOTH UI TRANSITIONS ===== */
+button,
+textarea,
+input,
+.help-panel,
+.result-box {
+  transition: all 0.3s ease;
+}
+
+/* ===== CONTRAST BOOST FOR TEXT ===== */
+.app.dark {
+  color: #ffffff;
+}
+
+.app.light {
+  color: #1a1a1a;
+}
+/* ===== LIGHT MODE FIX ===== */
+
+.app.light textarea,
+.app.light input {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111; /* dark readable text */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* placeholders (IMPORTANT) */
+.app.light textarea::placeholder,
+.app.light input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* option rows / containers */
+.app.light .option-row,
+.app.light .result-box,
+.app.light .decision-container,
+.app.light .help-panel {
+  background: rgba(255, 255, 255, 0.7);
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* buttons */
+.app.light button {
+  color: #111;
+}
+
+/* simulate button fix */
+.app.light .simulate-btn {
+  color: black;
+}
+
+/* headings */
+.app.light h1,
+.app.light h2,
+.app.light h3,
+.app.light p {
+  color: #111;
+}
+.app.light input:focus,
+.app.light textarea:focus {
+  outline: none;
+  border: 1px solid #00bcd4;
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+}
+/* ===== FORCE HELP PANEL VISIBILITY ===== */
+
+.help-panel {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+
+  width: 320px;
+  max-height: calc(100vh - 120px);
+
+  overflow-y: auto;
+
+  z-index: 9999; /* VERY IMPORTANT */
+
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== ADD OPEN/CLOSE ANIMATION ===== */
+
+.help-panel {
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== MAKE SURE BUTTON IS ABOVE EVERYTHING ===== */
+
+.help-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 10000;
+}
+
+/* ===== PREVENT WAVES FROM BLOCKING ===== */
+
+.app::before,
+.app::after {
+  pointer-events: none;
+}
+
+/* ===== ENSURE CONTENT DOESN'T COVER PANEL ===== */
+
+.layout,
+.decision-container {
+  z-index: 1;
+}
+/* ===== HISTORY ===== */
+.history-page {
+  padding: 20px;
+}
+
+.history-card {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ===== PROFILE ===== */
+.profile-page {
+  padding: 20px;
+}
+
+.profile-card {
+  padding: 20px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+/* align buttons on right */
+.top-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* history button */
+.top-actions button {
+  padding: 8px 12px;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+
+  border: none;
+  color: white;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* hover glow */
+.top-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+}
