@@ -1,16 +1,12 @@
 import Decision from "../models/decision.js";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// ✅ Gemini Configuration
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY
-);
+import Groq from "groq-sdk";
 
 // ✅ CREATE DECISION
 export const createDecision = async (req, res) => {
-
   try {
-
+     const groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
     const { title, options } = req.body;
 
     console.log("BODY:", req.body);
@@ -21,16 +17,10 @@ export const createDecision = async (req, res) => {
       !Array.isArray(options) ||
       options.length === 0
     ) {
-
       return res.status(400).json({
-        msg: "Invalid input"
+        msg: "Invalid input",
       });
     }
-
-    // ✅ Gemini Model
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash"
-    });
 
     // ✅ Dynamic AI Prompt
     const prompt = `
@@ -66,49 +56,69 @@ Final recommendation
 ✅ Best Option: <option>
 `;
 
-    // ✅ Generate AI Response
-    const aiResult = await model.generateContent(prompt);
+    // ✅ Groq AI Response
+    const completion =
+      await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
 
-    const result = aiResult.response.text();
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a smart AI decision assistant.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
 
-    console.log("GEMINI RESPONSE:", result);
+        temperature: 0.7,
+        max_tokens: 1024,
+      });
+
+    // ✅ Extract Response
+    const result =
+      completion.choices[0]?.message?.content ||
+      "No response generated";
+
+    console.log("GROQ RESPONSE:", result);
 
     // ✅ Save to MongoDB
     await Decision.create({
       userId: req.user.id,
       title,
-      result
+      result,
     });
 
     // ✅ Keep only latest 7 decisions
     const all = await Decision.find({
-      userId: req.user.id
+      userId: req.user.id,
     }).sort({ createdAt: -1 });
 
     if (all.length > 7) {
-
       const idsToDelete = all
         .slice(7)
         .map((d) => d._id);
 
       await Decision.deleteMany({
-        _id: { $in: idsToDelete }
+        _id: { $in: idsToDelete },
       });
     }
 
     // ✅ Send response
     res.json({
-      result
+      result,
     });
 
   } catch (err) {
 
-    console.error("AI ERROR:", err);
+    console.error("GROQ AI ERROR:", err);
 
     res.status(500).json({
       msg:
         err.message ||
-        "AI decision failed"
+        "AI decision failed",
     });
   }
 };
@@ -119,7 +129,7 @@ export const getDecisions = async (req, res) => {
   try {
 
     const data = await Decision.find({
-      userId: req.user.id
+      userId: req.user.id,
     }).sort({ createdAt: -1 });
 
     res.json(data);
@@ -129,7 +139,7 @@ export const getDecisions = async (req, res) => {
     console.error(err);
 
     res.status(500).json({
-      msg: "Error fetching decisions"
+      msg: "Error fetching decisions",
     });
   }
 };
@@ -141,20 +151,20 @@ export const deleteDecision = async (req, res) => {
 
     const decision = await Decision.findOne({
       _id: req.params.id,
-      userId: req.user.id
+      userId: req.user.id,
     });
 
     if (!decision) {
 
       return res.status(404).json({
-        msg: "Decision not found"
+        msg: "Decision not found",
       });
     }
 
     await decision.deleteOne();
 
     res.json({
-      msg: "Deleted successfully"
+      msg: "Deleted successfully",
     });
 
   } catch (err) {
@@ -162,7 +172,7 @@ export const deleteDecision = async (req, res) => {
     console.error(err);
 
     res.status(500).json({
-      msg: "Error deleting decision"
+      msg: "Error deleting decision",
     });
   }
 };

@@ -9,7 +9,7 @@ import decisionRoutes from "./routes/decisionRoutes.js";
 
 // Load environment variables FIRST
 dotenv.config({ path: "./.env"});
-console.log("ENV CHECK:", process.env.GEMINI_API_KEY);
+console.log("ENV CHECK:", process.env.GROQ_API_KEY);
 
 const app = express();
 
