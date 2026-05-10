@@ -4,9 +4,12 @@ import Groq from "groq-sdk";
 // ✅ CREATE DECISION
 export const createDecision = async (req, res) => {
   try {
-     const groq = new Groq({
+
+    // ✅ Groq Initialization
+    const groq = new Groq({
       apiKey: process.env.GROQ_API_KEY,
     });
+
     const { title, options } = req.body;
 
     console.log("BODY:", req.body);
@@ -22,38 +25,60 @@ export const createDecision = async (req, res) => {
       });
     }
 
-    // ✅ Dynamic AI Prompt
+    // ✅ Better Structured Prompt
     const prompt = `
 You are an intelligent AI decision-making assistant.
 
-Your task is to carefully analyze the user's situation and compare all options intelligently.
+Analyze the user's question carefully and compare all options properly.
 
-Question:
+QUESTION:
 ${title}
 
-Options:
+OPTIONS:
 ${options.map((o, i) => `${i + 1}. ${o}`).join("\n")}
 
-Instructions:
-- Compare all options carefully
-- Explain strengths and weaknesses of each option
-- Give meaningful pros and cons
-- Select the best option based on the situation
-- Explain WHY the option is best
-- Respond naturally like a real AI assistant
-- Keep the response detailed but easy to understand
+INSTRUCTIONS:
+- Compare every option clearly
+- Use bullet points everywhere
+- Keep response structured and readable
+- Mention advantages and disadvantages
+- Give practical reasoning
+- Keep language simple and professional
+- Final answer must be concise and clear
 
-Response Format:
+FORMAT RESPONSE EXACTLY LIKE THIS:
 
-👉 Introduction
+# Introduction
+- Short overview of the decision
 
-Detailed comparison of each option
+# Option Analysis
 
-Pros and cons of each option
+## Option 1: <name>
+Pros:
+- point
+- point
 
-Final recommendation
+Cons:
+- point
+- point
 
-✅ Best Option: <option>
+## Option 2: <name>
+Pros:
+- point
+- point
+
+Cons:
+- point
+- point
+
+(continue for all options)
+
+# Final Recommendation
+- Explain best option briefly
+- Explain why it is best
+
+# ✅ Best Option
+- Mention only the best option name
 `;
 
     // ✅ Groq AI Response
@@ -73,11 +98,11 @@ Final recommendation
           },
         ],
 
-        temperature: 0.7,
+        temperature: 0.4,
         max_tokens: 1024,
       });
 
-    // ✅ Extract Response
+    // ✅ Extract AI Response
     const result =
       completion.choices[0]?.message?.content ||
       "No response generated";
@@ -97,6 +122,7 @@ Final recommendation
     }).sort({ createdAt: -1 });
 
     if (all.length > 7) {
+
       const idsToDelete = all
         .slice(7)
         .map((d) => d._id);
@@ -106,7 +132,7 @@ Final recommendation
       });
     }
 
-    // ✅ Send response
+    // ✅ Send Response
     res.json({
       result,
     });
