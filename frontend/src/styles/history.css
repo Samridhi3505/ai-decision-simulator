@@ -407,3 +407,17 @@
   width: auto !important; /* stop full width */
   white-space: nowrap;    /* keep text in one line */
 }
+.message-box {
+  margin: 15px auto;
+  padding: 12px;
+  width: fit-content;
+  border-radius: 10px;
+  background: #d4edda;
+  color: #155724;
+  font-weight: 600;
+}
+
+.history-result {
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
