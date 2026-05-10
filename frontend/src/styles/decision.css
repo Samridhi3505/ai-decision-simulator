@@ -1004,3 +1004,17 @@ input,
   font-size: 15px;
   margin-top: 10px;
 }
+.message-box {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #ffefc7;
+  color: #222;
+  font-weight: 600;
+}
+
+.formatted-result {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  font-size: 15px;
+}

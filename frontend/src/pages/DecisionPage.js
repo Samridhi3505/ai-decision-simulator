@@ -10,6 +10,7 @@ const DecisionPage = () => {
   const [displayedText, setDisplayedText] = useState("");
   const [showHelp, setShowHelp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(true);
   const navigate = useNavigate();
 
@@ -24,10 +25,14 @@ const DecisionPage = () => {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const extractBestOption = (text) => {
-    const match = text.match(/Best Option:\s*(.*)/i);
-    return match ? match[1] : null;
-  };
+ const extractBestOption = (text) => {
+
+  const match = text.match(
+    /BEST OPTION:\s*🔥?\s*(.*)/i
+  );
+
+  return match ? match[1].trim() : null;
+};
 
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
@@ -49,11 +54,12 @@ const DecisionPage = () => {
 
   // ✅ FIXED VALIDATION
   if (!situation.trim() || cleanOptions.length === 0) {
-    alert("Please enter situation and at least one option");
+    setMessage( " ⚠️ Please enter situation and at least one option");
     return;
   }
 
   setLoading(true);
+  setMessage("");
   setDisplayedText("");
   setResult("");
 
@@ -66,7 +72,7 @@ const DecisionPage = () => {
 
     const fullText = res.data?.result || "";
     if (!fullText) {
-  alert("No result returned from server ❌");
+  setMessage("No result returned from server ❌");
   setLoading(false);
   return;
 }
@@ -94,7 +100,7 @@ const DecisionPage = () => {
     console.error(err);
 
     // ✅ better error message
-    alert(err.response?.data?.msg || "Failed to generate decision ❌");
+    setMessage(err.response?.data?.msg || "Failed to generate decision ❌");
 
     setLoading(false);
   }
@@ -157,6 +163,11 @@ const DecisionPage = () => {
           >
             {loading ? "⏳ Thinking..." : "🚀 Simulate Decision"}
           </button>
+           {message && (
+  <div className="message-box">
+    {message}
+  </div>
+)}
 
           <div className="result-box" ref={resultRef}>
             <h3>📊 AI Recommendation</h3>
