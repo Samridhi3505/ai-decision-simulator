@@ -1,7 +1,14 @@
 import Decision from "../models/decision.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// ✅ Gemini Configuration
+const genAI = new GoogleGenerativeAI(
+  process.env.GEMINI_API_KEY
+);
 
 // ✅ CREATE DECISION
 export const createDecision = async (req, res) => {
+
   try {
 
     const { title, options } = req.body;
@@ -9,46 +16,71 @@ export const createDecision = async (req, res) => {
     console.log("BODY:", req.body);
 
     // ✅ Validation
-    if (!title || !Array.isArray(options) || options.length === 0) {
+    if (
+      !title ||
+      !Array.isArray(options) ||
+      options.length === 0
+    ) {
+
       return res.status(400).json({
         msg: "Invalid input"
       });
     }
 
-    // ✅ Simple AI-style Response
-    const result = `
-AI Decision Analysis
+    // ✅ Gemini Model
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash"
+    });
 
-Situation:
+    // ✅ Dynamic AI Prompt
+    const prompt = `
+You are an intelligent AI decision-making assistant.
+
+Your task is to carefully analyze the user's situation and compare all options intelligently.
+
+Question:
 ${title}
 
 Options:
-${options.map((opt, i) => `${i + 1}. ${opt}`).join("\n")}
+${options.map((o, i) => `${i + 1}. ${o}`).join("\n")}
 
-Recommended Option:
-${options[0]}
+Instructions:
+- Compare all options carefully
+- Explain strengths and weaknesses of each option
+- Give meaningful pros and cons
+- Select the best option based on the situation
+- Explain WHY the option is best
+- Respond naturally like a real AI assistant
+- Keep the response detailed but easy to understand
 
-Reason:
-Based on the provided options, this appears to be the most balanced and practical choice considering overall usability, simplicity, and effectiveness.
+Response Format:
 
-Pros:
-- Easy to implement
-- Practical option
-- Balanced decision
+👉 Introduction
 
-Cons:
-- May require further evaluation
-- Depends on personal preference
+Detailed comparison of each option
+
+Pros and cons of each option
+
+Final recommendation
+
+✅ Best Option: <option>
 `;
 
+    // ✅ Generate AI Response
+    const aiResult = await model.generateContent(prompt);
+
+    const result = aiResult.response.text();
+
+    console.log("GEMINI RESPONSE:", result);
+
     // ✅ Save to MongoDB
-    const newDecision = await Decision.create({
+    await Decision.create({
       userId: req.user.id,
       title,
       result
     });
 
-    // ✅ Keep Only Latest 7 Decisions
+    // ✅ Keep only latest 7 decisions
     const all = await Decision.find({
       userId: req.user.id
     }).sort({ createdAt: -1 });
@@ -64,7 +96,7 @@ Cons:
       });
     }
 
-    // ✅ Send Response
+    // ✅ Send response
     res.json({
       result
     });
@@ -74,7 +106,9 @@ Cons:
     console.error("AI ERROR:", err);
 
     res.status(500).json({
-      msg: "AI decision failed"
+      msg:
+        err.message ||
+        "AI decision failed"
     });
   }
 };
@@ -111,6 +145,7 @@ export const deleteDecision = async (req, res) => {
     });
 
     if (!decision) {
+
       return res.status(404).json({
         msg: "Decision not found"
       });
