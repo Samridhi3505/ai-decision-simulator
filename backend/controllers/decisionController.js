@@ -77,8 +77,12 @@ Cons:
 - Explain best option briefly
 - Explain why it is best
 
-# ✅ Best Option
-- Mention only the best option name
+━━━━━━━━━━━━━━━━━━
+
+✅ BEST OPTION:
+🔥 <best option name>
+
+━━━━━━━━━━━━━━━━━━
 `;
 
     // ✅ Groq AI Response

@@ -167,7 +167,9 @@ const DecisionPage = () => {
               </p>
             )}
 
-            <p>{displayedText}</p>
+            <div className="formatted-result">
+  {displayedText}
+</div>
 
             {bestOption && (
               <div className="best-card">
